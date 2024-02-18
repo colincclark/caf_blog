@@ -19,6 +19,9 @@ const config: Config = {
       colors: {
         'royal-purple': '#7e05aa',
       },
+      fontFamily: {
+        merriweather: ['var(--font-merriweather-sans)'],
+      },
     },
   },
   plugins: [],
