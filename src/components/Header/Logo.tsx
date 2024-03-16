@@ -3,7 +3,11 @@ import Link from 'next/link';
 
 export default function Logo() {
   return (
-    <Link href="/" aria-label="Home page link via company logo" className="font-bold w-auto rounded-lg m-auto p-1 focus:outline-none focus:border focus:border-royal-purple">
+    <Link
+      aria-label="Home page link via company logo"
+      className="font-bold w-auto rounded-lg m-auto p-1 outline-yellow-500"
+      href="/"
+    >
       <Image
         src={"/logo-small.svg"}
         alt="Colin & Francesca's blog logo"
