@@ -1,10 +1,12 @@
 "use client"
 
 import { useState } from "react";
+import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import BurgerMenuNav from "@/components/Header/BurgerMenuNav";
 
 export default function BurgerMenu() {
+  const { data: session } = useSession()
   const [isBurgerMenuOpen, setIsBurgerMenuOpen] = useState(false)
 
   const handleBurgerClick = () => {
@@ -33,9 +35,20 @@ export default function BurgerMenu() {
             aria-hidden={!isBurgerMenuOpen}
             className="absolute top-11 lg:top-12 left-0 lg:left-2 bg-white border border-gray-200 flex flex-col lg:rounded w-screen lg:w-48 shadow-lg"
           >
-            <BurgerMenuNav content="Login" link="/login" />
-            <BurgerMenuNav content="Profile" link="/profile" />
-            <BurgerMenuNav content="Admin" link="/admin" />
+            {
+              session ? (
+                <>
+                  <BurgerMenuNav content="Profile" link="/profile" onClickHandler={() => setIsBurgerMenuOpen(false)} />
+                  <BurgerMenuNav content="Admin" link="/admin" onClickHandler={() => setIsBurgerMenuOpen(false)} />
+                  <BurgerMenuNav content="Logout" onClickHandler={() => {
+                    signOut({ redirect: false });
+                    setIsBurgerMenuOpen(false);
+                  }} />
+                </>
+              ) : (
+                <BurgerMenuNav content="Login" link="/api/auth/signin" />
+              )
+            }
           </ul>
         )
       }
