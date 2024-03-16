@@ -15,16 +15,16 @@ interface SelectProps {
 export default function Select({ defaultValue, name }: SelectProps) {
   const [options, setOptions] = useState<Option[]>();
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const fetchedOptions = await fetchOptions();
-      setOptions(fetchedOptions);
-    };
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     const fetchedOptions = await fetchOptions();
+  //     setOptions(fetchedOptions);
+  //   };
 
-    fetchData();
-  }, []);
+  //   fetchData();
+  // }, []);
 
   return (
-    <select name={name}>{name}</button>
+    <select name={name}>{name}</select>
   )
 }

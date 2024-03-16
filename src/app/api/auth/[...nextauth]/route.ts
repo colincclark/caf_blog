@@ -1,3 +1,4 @@
+import bcrypt from "bcryptjs"
 import NextAuth from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials"
 import { db } from '@/db'
@@ -7,34 +8,39 @@ const handler = NextAuth({
     CredentialsProvider({
       // The name to display on the sign in form (e.g. 'Sign in with...')
       name: 'username',
-      // The credentials is used to generate a suitable form on the sign in page.
-      // You can specify whatever fields you are expecting to be submitted.
-      // e.g. domain, username, password, 2FA token, etc.
-      // You can pass any HTML attribute to the <input> tag through the object.
+      // pass any HTML attribute to the <input> tag through each property of credentials
       credentials: {
         username: { label: "Username", type: "text", placeholder: "Please enter your username" },
         password: { label: "Password", type: "password" }
       },
 
-      async authorize(credentials, req) {
+      async authorize(credentials) {
         const { username, password } = credentials ?? { username: '', password: '' }
 
-        if (!username || !password) return null
+        if (!username || !password) {
+          throw new Error('Please provide both username and password');
+        }
 
-        const user = await db.users.findFirst({
+        const currentUser = await db.users.findFirst({
           where: {
-            username: username,
-            password_hash: password,
+            username: username
           },
         })
 
-        // If a user is found, return the user object
-        if (user) {
-          return user as any
+        console.log("currentUser: ", currentUser)
+
+        if (!currentUser) {
+          throw new Error("Please provide the correct credentials");
         }
 
-        // If no user is found or the credentials are invalid, return null
-        return null
+        const passwordMatch = await bcrypt.compare(password, currentUser.password_hash);
+        console.log("passwordMatch: ", passwordMatch)
+
+        if (!passwordMatch) {
+          throw new Error("Please provide the correct credentials");
+        }
+
+        return currentUser as any
       }
     })
   ]

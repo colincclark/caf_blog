@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 import { db } from "@/db";
 import { NewPostErrorType } from "@/types/new-post.d"
 
-export async function newPost(formState: { message: string, errorType: NewPostErrorType }, formData: FormData) {
+export async function newPost(formState: { message: string, errorType: NewPostErrorType }, formData: any) {
   let post;
 
   const user_id = formData.get("user_id") || 1
@@ -41,7 +41,7 @@ export async function newPost(formState: { message: string, errorType: NewPostEr
         user_id
       }
     })
-  } catch (err: unknown) {
+  } catch (err: any) {
     if (err instanceof Error) {
       return { message: err.message, errorType: NewPostErrorType.Form }
     } else {

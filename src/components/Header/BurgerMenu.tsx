@@ -40,9 +40,9 @@ export default function BurgerMenu() {
                 <>
                   <BurgerMenuNav content="Profile" link="/profile" onClickHandler={() => setIsBurgerMenuOpen(false)} />
                   <BurgerMenuNav content="Admin" link="/admin" onClickHandler={() => setIsBurgerMenuOpen(false)} />
-                  <BurgerMenuNav content="Logout" onClickHandler={() => {
-                    signOut({ redirect: false });
+                  <BurgerMenuNav content="Logout" onClickHandler={async () => {
                     setIsBurgerMenuOpen(false);
+                    await signOut({ redirect: false });
                   }} />
                 </>
               ) : (
